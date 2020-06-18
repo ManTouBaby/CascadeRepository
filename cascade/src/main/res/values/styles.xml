@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CornerTextView">
+        <attr name="auto_background" format="boolean" />
+        <attr name="radius" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="GroupTreeView">
+        <attr name="isShowRoot" format="boolean" />
+        <attr name="isOpenTree" format="boolean" />
+        <attr name="isOpenMultiSelect" format="boolean" />
+        <attr name="groupItemBGColor" format="dimension|color" />
+    </declare-styleable>
+</resources>

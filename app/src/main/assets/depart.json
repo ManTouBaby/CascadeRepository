@@ -1,0 +1,162 @@
+[
+  {
+    "id": "783755097-01",
+    "pId": "783755097",
+    "name": "领导",
+    "userType": null,
+    "checked": 0,
+    "isParent": 1,
+    "uniqueKey": null,
+    "usercode": null
+  },
+  {
+    "id": "783755097-15",
+    "pId": "783755097",
+    "name": "退休人员",
+    "userType": null,
+    "checked": 0,
+    "isParent": 1,
+    "uniqueKey": null,
+    "usercode": null
+  },
+  {
+    "id": "783755097-02",
+    "pId": "783755097",
+    "name": "办公行政组",
+    "userType": null,
+    "checked": 0,
+    "isParent": 1,
+    "uniqueKey": null,
+    "usercode": null
+  },
+  {
+    "id": "783755097-03",
+    "pId": "783755097",
+    "name": "政策法规组",
+    "userType": null,
+    "checked": 0,
+    "isParent": 1,
+    "uniqueKey": null,
+    "usercode": null
+  },
+  {
+    "id": "783755097-04",
+    "pId": "783755097",
+    "name": "安全生产监督管理组",
+    "userType": null,
+    "checked": 0,
+    "isParent": 1,
+    "uniqueKey": null,
+    "usercode": null
+  },
+  {
+    "id": "783755097-05",
+    "pId": "783755097",
+    "name": "应急指挥组",
+    "userType": null,
+    "checked": 0,
+    "isParent": 1,
+    "uniqueKey": null,
+    "usercode": null
+  },
+  {
+    "id": "783755097-06",
+    "pId": "783755097",
+    "name": "综合协调组",
+    "userType": null,
+    "checked": 0,
+    "isParent": 1,
+    "uniqueKey": null,
+    "usercode": null
+  },
+  {
+    "id": "783755097-07",
+    "pId": "783755097",
+    "name": "执法组",
+    "userType": null,
+    "checked": 0,
+    "isParent": 1,
+    "uniqueKey": null,
+    "usercode": null
+  },
+  {
+    "id": "783755097-08",
+    "pId": "783755097",
+    "name": "宣教中心",
+    "userType": null,
+    "checked": 0,
+    "isParent": 1,
+    "uniqueKey": null,
+    "usercode": null
+  },
+  {
+    "id": "783755097-09",
+    "pId": "783755097",
+    "name": "应急救援和预案管理组",
+    "userType": null,
+    "checked": 0,
+    "isParent": 1,
+    "uniqueKey": null,
+    "usercode": null
+  },
+  {
+    "id": "783755097-10",
+    "pId": "783755097",
+    "name": "综合减灾和物资保障组",
+    "userType": null,
+    "checked": 0,
+    "isParent": 1,
+    "uniqueKey": null,
+    "usercode": null
+  },
+  {
+    "id": "783755097-11",
+    "pId": "783755097",
+    "name": "危险化学品安全监管科",
+    "userType": null,
+    "checked": 0,
+    "isParent": 1,
+    "uniqueKey": null,
+    "usercode": null
+  },
+  {
+    "id": "783755097-12",
+    "pId": "783755097",
+    "name": "防汛防旱防风指挥部办公室",
+    "userType": null,
+    "checked": 0,
+    "isParent": 1,
+    "uniqueKey": null,
+    "usercode": null
+  },
+  {
+    "id": "783755097-13",
+    "pId": "783755097",
+    "name": "森林消防救援大队",
+    "userType": null,
+    "checked": 0,
+    "isParent": 1,
+    "uniqueKey": null,
+    "usercode": null
+  },
+  {
+    "id": "783755097-14",
+    "pId": "783755097",
+    "name": "值班室",
+    "userType": null,
+    "checked": 0,
+    "isParent": 1,
+    "uniqueKey": null,
+    "usercode": null
+  },
+  {
+    "id": "1894901AF7D04111B0A33FBD2336DDD1",
+    "pId": "783755097",
+    "name": "超级管理员",
+    "userType": null,
+    "checked": 0,
+    "isParent": 0,
+    "uniqueKey": null,
+    "usercode": null
+  }
+]

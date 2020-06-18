@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="36dp"
+    android:background="#e2e2e2"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingLeft="12dp"
+    android:paddingRight="8dp">
+
+    <LinearLayout
+        android:id="@+id/line_container"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginRight="8dp"
+        android:padding="0dp">
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"/>
+    </LinearLayout>
+
+<!--        <include layout="@layout/include_line_tag"/>-->
+<!--        <include layout="@layout/include_end_tag"/>-->
+
+    <TextView
+        android:id="@+id/item_group_name"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:gravity="center_vertical"
+        android:text="群组名称" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/item_group_select_tag"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="@drawable/icon_group_select" />
+</LinearLayout>
