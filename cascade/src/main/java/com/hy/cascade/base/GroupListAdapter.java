@@ -28,12 +28,14 @@ public class GroupListAdapter extends RecyclerView.Adapter<SmartVH> {
     private List<BaseBean> mDates = new ArrayList<>();
     private boolean isOpenMultiSelect;
     private int mGroupItemBGColor;
+    private int mGroupItemColor;
     private int mGroupMemberBGColor;
     private int mGroupOpenTagColor;
 
-    public GroupListAdapter(boolean isOpenMultiSelect, int groupItemBGColor, int groupMemberBGColor, int groupOpenTagColor) {
+    public GroupListAdapter(boolean isOpenMultiSelect, int groupItemColor, int groupItemBGColor, int groupMemberBGColor, int groupOpenTagColor) {
         this.isOpenMultiSelect = isOpenMultiSelect;
         this.mGroupItemBGColor = groupItemBGColor;
+        this.mGroupItemColor = groupItemColor;
         this.mGroupMemberBGColor = groupMemberBGColor;
         this.mGroupOpenTagColor = groupOpenTagColor;
     }
@@ -102,7 +104,7 @@ public class GroupListAdapter extends RecyclerView.Adapter<SmartVH> {
             LinearLayout mLineContainer = holder.getViewById(R.id.line_container);
             if (itemBean.getLevel() > 1) {
                 if (itemBean.isEnd()) {
-                    addEndTag(mLineContainer, cascadeBean.getLevel()+1, cascadeBean.isEnd());
+                    addEndTag(mLineContainer, cascadeBean.getLevel() + 1, cascadeBean.isEnd());
                 } else {
                     addLineTag(mLineContainer, cascadeBean.getLevel(), cascadeBean.isEnd());
                 }
@@ -114,8 +116,10 @@ public class GroupListAdapter extends RecyclerView.Adapter<SmartVH> {
             });
         } else {
             holder.itemView.setBackgroundColor(mGroupItemBGColor);
+            TextView groupName = holder.getText(R.id.item_group_name);
             GroupBean groupItem = (GroupBean) cascadeBean;
-            holder.getText(R.id.item_group_name).setText(groupItem.getGroupName());
+            groupName.setText(groupItem.getGroupName());
+            groupName.setTextColor(mGroupItemColor);
             ImageView selectTag = holder.getImage(R.id.item_group_select_tag);
             LinearLayout mLineContainer = holder.getViewById(R.id.line_container);
             mLineContainer.setVisibility(groupItem.getLevel() == 1 ? View.GONE : View.VISIBLE);

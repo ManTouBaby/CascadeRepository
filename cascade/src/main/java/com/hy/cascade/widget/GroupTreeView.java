@@ -65,6 +65,7 @@ public class GroupTreeView extends LinearLayout implements View.OnClickListener,
     boolean isShowRoot;
     boolean isOpenMultiSelect;
     int mGroupItemBGColor;//分组背景
+    int mGroupItemColor;//分组背景
     int mGroupMemberBGColor;//分组成员背景
     int mGroupTitleBGColor;//标题背景
     int mGroupTitleColor;//颜色
@@ -85,6 +86,7 @@ public class GroupTreeView extends LinearLayout implements View.OnClickListener,
         mGroupTitleColor = array.getColor(R.styleable.GroupTreeView_groupTitleColor, Color.parseColor("#666666"));
         mGroupCancelBtnColor = array.getColor(R.styleable.GroupTreeView_groupCancelBtnColor, Color.parseColor("#333333"));
         mGroupOpenTagColor = array.getColor(R.styleable.GroupTreeView_groupOpenTagColor, Color.parseColor("#333333"));
+        mGroupItemColor = array.getColor(R.styleable.GroupTreeView_groupItemColor, Color.parseColor("#333333"));
 
         isOpenMultiSelect = array.getBoolean(R.styleable.GroupTreeView_isOpenMultiSelect, false);
         isShowRoot = array.getBoolean(R.styleable.GroupTreeView_isShowRoot, false);
@@ -101,7 +103,7 @@ public class GroupTreeView extends LinearLayout implements View.OnClickListener,
         mCancel.setTextColor(mGroupCancelBtnColor);
         mCascadeList = findViewById(R.id.rv_cascade_list);
         mMemberSearchAdapter = new MemberSearchAdapter(mGroupMemberBGColor);
-        mCascadeAdapter = new GroupListAdapter(isOpenMultiSelect, mGroupItemBGColor, mGroupMemberBGColor,mGroupOpenTagColor);
+        mCascadeAdapter = new GroupListAdapter(isOpenMultiSelect,mGroupItemColor, mGroupItemBGColor, mGroupMemberBGColor,mGroupOpenTagColor);
 
         initEditText();
         mCascadeList.setLayoutManager(new LinearLayoutManager(context));

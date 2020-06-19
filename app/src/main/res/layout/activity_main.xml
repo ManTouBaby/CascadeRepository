@@ -12,6 +12,7 @@
         android:layout_height="match_parent"
         app:isOpenMultiSelect="false"
         app:groupItemBGColor="#FCFCFC"
+        app:groupItemColor="#BE8080"
         app:groupCancelBtnColor="#FFF"
         app:groupTitleBGColor="#00BCD4"
         app:groupTitleColor="#666666"

@@ -48,7 +48,6 @@
                 android:layout_marginLeft="24dp"
                 android:layout_marginRight="16dp"
                 android:src="@mipmap/icon_search" />
-
         </RelativeLayout>
 
         <TextView
