@@ -11,7 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:isOpenMultiSelect="false"
-        app:groupItemBGColor="#82B9B9"
-        app:isShowRoot="false"/>
+        app:groupItemBGColor="#FCFCFC"
+        app:groupCancelBtnColor="#FFF"
+        app:groupTitleBGColor="#00BCD4"
+        app:groupTitleColor="#666666"
+        app:groupMemberBGColor="#e5e5e5"
+        app:groupOpenTagColor="#e1e1e1"
+        app:isShowRoot="true"/>
 
 </LinearLayout>

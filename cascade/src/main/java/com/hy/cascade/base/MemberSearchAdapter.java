@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,11 @@ public class MemberSearchAdapter extends RecyclerView.Adapter<SmartVH> {
     private OnGroupItemClickListener mMemberClickListener;
     private List<BaseGroupMemberBO> mDates = new ArrayList<>();
     private String searchLabel;
+    private int mGroupMemberBGColor;
+
+    public MemberSearchAdapter( int mGroupMemberBGColor) {
+        this.mGroupMemberBGColor = mGroupMemberBGColor;
+    }
 
     @Override
     public SmartVH onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -35,25 +41,39 @@ public class MemberSearchAdapter extends RecyclerView.Adapter<SmartVH> {
 
     @Override
     public void onBindViewHolder(SmartVH holder, int position) {
+        holder.itemView.setBackgroundColor(mGroupMemberBGColor);
         BaseGroupMemberBO cascadeBean = mDates.get(position);
-        int holderShowNameIndex = cascadeBean.getGroupMemberName().indexOf(searchLabel);
-        int messageContentIndex = cascadeBean.getGroupMemberNumber().indexOf(searchLabel);
-        int groupNameIndex = cascadeBean.getGroupName().indexOf(searchLabel);
-        SpannableStringBuilder groupName = new SpannableStringBuilder(cascadeBean.getGroupName());
-        SpannableStringBuilder messageHolderShowName = new SpannableStringBuilder(cascadeBean.getGroupMemberName());
-        SpannableStringBuilder messageContent = new SpannableStringBuilder(cascadeBean.getGroupMemberNumber());
-        if (holderShowNameIndex != -1)
-            messageHolderShowName.setSpan(new ForegroundColorSpan(Color.RED), holderShowNameIndex, (holderShowNameIndex + searchLabel.length()), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        if (messageContentIndex != -1)
-            messageContent.setSpan(new ForegroundColorSpan(Color.RED), messageContentIndex, (messageContentIndex + searchLabel.length()), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        if (groupNameIndex != -1)
-            groupName.setSpan(new ForegroundColorSpan(Color.RED), groupNameIndex, (groupNameIndex + searchLabel.length()), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        holder.getText(R.id.item_name).setText(messageHolderShowName);
-        holder.getText(R.id.item_number).setText(messageContent);
-        holder.getText(R.id.item_member_depart).setText(groupName);
+        String groupMemberName = cascadeBean.getGroupMemberName();
+        String groupMemberNumber = cascadeBean.getGroupMemberNumber();
+        if (!TextUtils.isEmpty(groupMemberName)) {
+            int holderShowNameIndex = groupMemberName.indexOf(searchLabel);
+            SpannableStringBuilder messageHolderShowName = new SpannableStringBuilder(groupMemberName);
+            if (holderShowNameIndex != -1) {
+                messageHolderShowName.setSpan(new ForegroundColorSpan(Color.RED), holderShowNameIndex, (holderShowNameIndex + searchLabel.length()), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+            holder.getText(R.id.item_name).setText(messageHolderShowName);
+        }
+        if (!TextUtils.isEmpty(groupMemberNumber)) {
+            int messageContentIndex = groupMemberNumber.indexOf(searchLabel);
+            SpannableStringBuilder messageContent = new SpannableStringBuilder(groupMemberNumber);
+            if (messageContentIndex != -1) {
+                messageContent.setSpan(new ForegroundColorSpan(Color.RED), messageContentIndex, (messageContentIndex + searchLabel.length()), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+            holder.getText(R.id.item_number).setText(messageContent);
+        }
+        if (TextUtils.isEmpty(cascadeBean.getGroupName())) {
+            int groupNameIndex = cascadeBean.getGroupName().indexOf(searchLabel);
+            SpannableStringBuilder groupName = new SpannableStringBuilder(cascadeBean.getGroupName());
+            if (groupNameIndex != -1) {
+                groupName.setSpan(new ForegroundColorSpan(Color.RED), groupNameIndex, (groupNameIndex + searchLabel.length()), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+            holder.getText(R.id.item_member_depart).setText(groupName);
+        }
+
+
         holder.getText(R.id.item_member_job).setText(StringUtil.isEmpty(cascadeBean.getGroupMemberJob()));
 
-        holder.getText(R.id.item_pro).setText(cascadeBean.getGroupMemberName());
+        holder.getText(R.id.item_pro).setText(groupMemberName);
         holder.itemView.setOnClickListener(v -> {
             if (mMemberClickListener != null) {
                 mMemberClickListener.onItemClick(cascadeBean, position);

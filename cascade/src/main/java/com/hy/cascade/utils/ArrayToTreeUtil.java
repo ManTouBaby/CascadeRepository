@@ -63,6 +63,7 @@ public class ArrayToTreeUtil {
                 groupBeans.add(bean);
             }
         }
+        if (groupBeans.size() > 0) groupBeans.get(groupBeans.size() - 1).setEnd(true);
         return groupBeans;
     }
 
@@ -75,6 +76,7 @@ public class ArrayToTreeUtil {
                 memberBOS.add(groupMemberBO);
             }
         }
+        if (memberBOS.size() > 0) memberBOS.get(memberBOS.size() - 1).setEnd(true);
         return memberBOS;
     }
 }

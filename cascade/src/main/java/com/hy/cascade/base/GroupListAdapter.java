@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -27,10 +28,14 @@ public class GroupListAdapter extends RecyclerView.Adapter<SmartVH> {
     private List<BaseBean> mDates = new ArrayList<>();
     private boolean isOpenMultiSelect;
     private int mGroupItemBGColor;
+    private int mGroupMemberBGColor;
+    private int mGroupOpenTagColor;
 
-    public GroupListAdapter(boolean isOpenMultiSelect, int groupItemBGColor) {
+    public GroupListAdapter(boolean isOpenMultiSelect, int groupItemBGColor, int groupMemberBGColor, int groupOpenTagColor) {
         this.isOpenMultiSelect = isOpenMultiSelect;
         this.mGroupItemBGColor = groupItemBGColor;
+        this.mGroupMemberBGColor = groupMemberBGColor;
+        this.mGroupOpenTagColor = groupOpenTagColor;
     }
 
     @Override
@@ -85,6 +90,7 @@ public class GroupListAdapter extends RecyclerView.Adapter<SmartVH> {
     public void onBindViewHolder(SmartVH holder, int position) {
         BaseBean cascadeBean = mDates.get(position);
         if (cascadeBean.getItemType() == BaseBean.TYPE_ITEM) {
+            holder.itemView.setBackgroundColor(mGroupMemberBGColor);
             BaseGroupMemberBO itemBean = (BaseGroupMemberBO) cascadeBean;
             holder.getText(R.id.item_pro).setText(StringUtil.isEmpty(itemBean.getGroupMemberName()));
             holder.getText(R.id.item_name).setText(StringUtil.isEmpty(itemBean.getGroupMemberName()));
@@ -94,7 +100,13 @@ public class GroupListAdapter extends RecyclerView.Adapter<SmartVH> {
             selectTag.setVisibility(isOpenMultiSelect ? View.VISIBLE : View.INVISIBLE);
             selectTag.setOnClickListener(v -> v.setSelected(!v.isSelected()));
             LinearLayout mLineContainer = holder.getViewById(R.id.line_container);
-            addLineTag(mLineContainer, cascadeBean.getLevel(), cascadeBean.isEnd());
+            if (itemBean.getLevel() > 1) {
+                if (itemBean.isEnd()) {
+                    addEndTag(mLineContainer, cascadeBean.getLevel()+1, cascadeBean.isEnd());
+                } else {
+                    addLineTag(mLineContainer, cascadeBean.getLevel(), cascadeBean.isEnd());
+                }
+            }
             holder.itemView.setOnClickListener(v -> {
                 if (mMemberClickListener != null) {
                     mMemberClickListener.onItemClick(itemBean, position);
@@ -104,7 +116,7 @@ public class GroupListAdapter extends RecyclerView.Adapter<SmartVH> {
             holder.itemView.setBackgroundColor(mGroupItemBGColor);
             GroupBean groupItem = (GroupBean) cascadeBean;
             holder.getText(R.id.item_group_name).setText(groupItem.getGroupName());
-            TextView selectTag = holder.getText(R.id.item_group_select_tag);
+            ImageView selectTag = holder.getImage(R.id.item_group_select_tag);
             LinearLayout mLineContainer = holder.getViewById(R.id.line_container);
             mLineContainer.setVisibility(groupItem.getLevel() == 1 ? View.GONE : View.VISIBLE);
             if (groupItem.getLevel() > 1) {
@@ -114,7 +126,9 @@ public class GroupListAdapter extends RecyclerView.Adapter<SmartVH> {
                     addBranchTag(mLineContainer, groupItem.getLevel(), cascadeBean.isEnd());
                 }
             }
-
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                selectTag.getDrawable().setTint(mGroupOpenTagColor);
+            }
             selectTag.setVisibility(groupItem.getChildren() == null && groupItem.getGroupMembers() == null ? View.GONE : View.VISIBLE);
             selectTag.setSelected(groupItem.isSelect());
             selectTag.setOnClickListener(v -> {
@@ -163,9 +177,10 @@ public class GroupListAdapter extends RecyclerView.Adapter<SmartVH> {
     }
 
     private void addLine(LinearLayout mLineContainer) {
+        float density = mLineContainer.getContext().getResources().getDisplayMetrics().density;
         View view = LayoutInflater.from(mLineContainer.getContext()).inflate(R.layout.include_line_tag, null);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(3, ViewGroup.LayoutParams.MATCH_PARENT);
-        params.setMargins(0, 0, 12 * 3, 0);
+        params.setMargins(0, 0, (int) (23 * density), 0);
         mLineContainer.addView(view, params);
     }
 

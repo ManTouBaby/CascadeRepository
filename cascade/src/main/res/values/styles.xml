@@ -7,8 +7,13 @@
 
     <declare-styleable name="GroupTreeView">
         <attr name="isShowRoot" format="boolean" />
-        <attr name="isOpenTree" format="boolean" />
         <attr name="isOpenMultiSelect" format="boolean" />
+
         <attr name="groupItemBGColor" format="dimension|color" />
+        <attr name="groupMemberBGColor" format="dimension|color" />
+        <attr name="groupTitleBGColor" format="dimension|color" />
+        <attr name="groupTitleColor" format="dimension|color" />
+        <attr name="groupCancelBtnColor" format="dimension|color" />
+        <attr name="groupOpenTagColor" format="dimension|color" />
     </declare-styleable>
 </resources>

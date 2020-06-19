@@ -1,10 +1,3 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hy.cascade">
-
-    <application>
-        <activity
-            android:name=".page.ActivitySearch"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:windowSoftInputMode="adjustPan" />
-    </application>
 </manifest>
