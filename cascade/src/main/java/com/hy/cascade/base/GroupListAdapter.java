@@ -26,13 +26,15 @@ import java.util.List;
 public class GroupListAdapter extends RecyclerView.Adapter<SmartVH> {
     private OnGroupItemClickListener mMemberClickListener;
     private List<BaseBean> mDates = new ArrayList<>();
+    private boolean isOpenTree;
     private boolean isOpenMultiSelect;
     private int mGroupItemBGColor;
     private int mGroupItemColor;
     private int mGroupMemberBGColor;
     private int mGroupOpenTagColor;
 
-    public GroupListAdapter(boolean isOpenMultiSelect, int groupItemColor, int groupItemBGColor, int groupMemberBGColor, int groupOpenTagColor) {
+    public GroupListAdapter(boolean isOpenTree, boolean isOpenMultiSelect, int groupItemColor, int groupItemBGColor, int groupMemberBGColor, int groupOpenTagColor) {
+        this.isOpenTree = isOpenTree;
         this.isOpenMultiSelect = isOpenMultiSelect;
         this.mGroupItemBGColor = groupItemBGColor;
         this.mGroupItemColor = groupItemColor;
@@ -46,34 +48,39 @@ public class GroupListAdapter extends RecyclerView.Adapter<SmartVH> {
     }
 
     public void setDates(List<BaseBean> dates) {
-        this.mDates = dates;
-        List<BaseBean> baseBeans = new ArrayList<>(dates);
-        for (int i = 0; i < baseBeans.size(); i++) {
-            BaseBean cascade = baseBeans.get(i);
-            GroupBean groupItem = (GroupBean) cascade;
-            initDates(i, groupItem);
+        if (isOpenTree) {
+            mDates.clear();
+            List<BaseBean> baseBeans = new ArrayList<>(dates);
+            for (BaseBean baseBean : baseBeans) {
+                GroupBean bean = (GroupBean) baseBean;
+                initDates(bean);
+                System.out.println("-----------------------------------");
+            }
+        } else {
+            this.mDates = dates;
         }
         notifyDataSetChanged();
     }
 
-    private void initDates(int insertPosition, GroupBean groupItem) {
-        if (groupItem.isSelect()) {
-            if (groupItem.getGroupMembers() != null && groupItem.getGroupMembers().size() > 0) {
-                List<BaseBean> cascades = new ArrayList<>(groupItem.getGroupMembers());
-                cascades.get(cascades.size() - 1).setEnd(true);
-                this.mDates.addAll(insertPosition + 1, cascades);
-            }
+    private void initDates(GroupBean groupItem) {
+        groupItem.setSelect(true);
+        this.mDates.add(groupItem);
+        System.out.print(groupItem.getGroupName() + "--");
+        if (groupItem.getGroupMembers() != null && groupItem.getGroupMembers().size() > 0) {
+            List<BaseBean> cascades = new ArrayList<>(groupItem.getGroupMembers());
+            this.mDates.addAll(cascades);
+            System.out.print("分类成员数：" + groupItem.getGroupMembers().size());
+        }
 
-            if (groupItem.getChildren() != null && groupItem.getChildren().size() > 0) {
-                List<BaseBean> cascades = new ArrayList<>(groupItem.getChildren());
-                cascades.get(cascades.size() - 1).setEnd(true);
-                this.mDates.addAll(insertPosition + 1, cascades);
-                for (BaseBean baseBean : cascades) {
-                    GroupBean bean = (GroupBean) baseBean;
-                    initDates(groupItem.getGroupMembers().size() + cascades.size() + 1, bean);
-                }
+        if (groupItem.getChildren() != null && groupItem.getChildren().size() > 0) {
+            List<BaseBean> cascades = new ArrayList<>(groupItem.getChildren());
+            System.out.print("   子成员数量：" + groupItem.getChildren().size());
+            for (BaseBean baseBean : cascades) {
+                GroupBean bean = (GroupBean) baseBean;
+                initDates(bean);
             }
         }
+        System.out.println("   结束");
     }
 
     @Override
@@ -193,7 +200,7 @@ public class GroupListAdapter extends RecyclerView.Adapter<SmartVH> {
         GroupBean groupItem = (GroupBean) baseCascade;
         List<BaseGroupMemberBO> dates = groupItem.getGroupMembers();
         mDates.removeAll(dates);
-//        System.out.println("移除成员数量：" + dates.size());
+
         List<GroupBean> children = groupItem.getChildren();
         if (children != null && children.size() > 0) {
             for (GroupBean bean : children) {
@@ -203,7 +210,6 @@ public class GroupListAdapter extends RecyclerView.Adapter<SmartVH> {
                 }
             }
             mDates.removeAll(children);
-//            System.out.println("移除子分类数量：" + children.size());
         }
         notifyDataSetChanged();
     }

@@ -10,14 +10,15 @@
         android:id="@+id/gt_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:isOpenMultiSelect="false"
+        app:groupCancelBtnColor="#FFF"
         app:groupItemBGColor="#FCFCFC"
         app:groupItemColor="#BE8080"
-        app:groupCancelBtnColor="#FFF"
-        app:groupTitleBGColor="#00BCD4"
-        app:groupTitleColor="#666666"
         app:groupMemberBGColor="#e5e5e5"
         app:groupOpenTagColor="#e1e1e1"
-        app:isShowRoot="true"/>
+        app:groupTitleBGColor="#00BCD4"
+        app:groupTitleColor="#666666"
+        app:isOpenMultiSelect="false"
+        app:isShowRoot="true"
+        app:isShowTree="true"/>
 
 </LinearLayout>

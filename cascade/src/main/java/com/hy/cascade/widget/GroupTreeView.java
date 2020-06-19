@@ -14,6 +14,7 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -62,6 +63,7 @@ public class GroupTreeView extends LinearLayout implements View.OnClickListener,
 
     private Handler mHandler = new Handler();
 
+    boolean isShowTree;
     boolean isShowRoot;
     boolean isOpenMultiSelect;
     int mGroupItemBGColor;//分组背景
@@ -90,20 +92,20 @@ public class GroupTreeView extends LinearLayout implements View.OnClickListener,
 
         isOpenMultiSelect = array.getBoolean(R.styleable.GroupTreeView_isOpenMultiSelect, false);
         isShowRoot = array.getBoolean(R.styleable.GroupTreeView_isShowRoot, false);
+        isShowTree = array.getBoolean(R.styleable.GroupTreeView_isShowTree, false);
         mMemberDao = DBHelper.getInstance(context).createMemberDao();
 
         LayoutInflater.from(context).inflate(R.layout.include_group_tree_show, this);
         mCancel = findViewById(R.id.mi_cancel_search_history);
 
         mToolbarContainer = findViewById(R.id.mi_toolbar_container);
-
         mToolbarContainer.setBackgroundColor(mGroupTitleBGColor);
         mCancel.setOnClickListener(this);
         mCancel.setVisibility(GONE);
         mCancel.setTextColor(mGroupCancelBtnColor);
         mCascadeList = findViewById(R.id.rv_cascade_list);
         mMemberSearchAdapter = new MemberSearchAdapter(mGroupMemberBGColor);
-        mCascadeAdapter = new GroupListAdapter(isOpenMultiSelect,mGroupItemColor, mGroupItemBGColor, mGroupMemberBGColor,mGroupOpenTagColor);
+        mCascadeAdapter = new GroupListAdapter(isShowTree, isOpenMultiSelect, mGroupItemColor, mGroupItemBGColor, mGroupMemberBGColor, mGroupOpenTagColor);
 
         initEditText();
         mCascadeList.setLayoutManager(new LinearLayoutManager(context));
@@ -174,8 +176,21 @@ public class GroupTreeView extends LinearLayout implements View.OnClickListener,
     @Override
     public void onClick(View v) {
         mEditText.setText("");
+        mEditText.setCursorVisible(false);
+        closeKeyboard(mEditText, v.getContext());
         v.setVisibility(GONE);
         mCascadeList.setAdapter(mCascadeAdapter);
+    }
+
+    /**
+     * 关闭软键盘
+     *
+     * @param mEditText 输入框
+     * @param mContext  上下文
+     */
+    public static void closeKeyboard(EditText mEditText, Context mContext) {
+        InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
     }
 
     public void setOnMemberClickListener(OnMemberClickListener mMemberClickListener) {

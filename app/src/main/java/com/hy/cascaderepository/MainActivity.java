@@ -24,17 +24,18 @@ public class MainActivity extends AppCompatActivity implements OnMemberClickList
 
         GroupTreeView groupTreeView = findViewById(R.id.gt_view);
         groupTreeView.setOnMemberClickListener(this);
-        String departJson = getJson(this, "depart.json");
-        String memberJson = getJson(this, "member.json");
+        String departJson = getJson(this, "allDepart.json");
+        String memberJson = getJson(this, "allMember.json");
         List<Member> members = JSON.parseArray(memberJson, Member.class);
-        List<Depart> departs = JSON.parseArray(departJson, Depart.class);
+        List<AllDepart> departs = JSON.parseArray(departJson, AllDepart.class);
         for (Member member : members) {
             member.setMemberData(member);
         }
-        for (Depart depart : departs) {
+        for (AllDepart depart : departs) {
             depart.setGroupData(depart);
         }
-        groupTreeView.setGroupBOS("783755097", "花都分局", departs, members);
+        groupTreeView.setGroupBOS("440114000000", "花都分局", departs, members);
+//        groupTreeView.setGroupBOS("783755097", "花都分局", departs, members);
     }
 
     /**

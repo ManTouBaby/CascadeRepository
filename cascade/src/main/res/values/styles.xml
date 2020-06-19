@@ -8,6 +8,7 @@
     <declare-styleable name="GroupTreeView">
         <attr name="isShowRoot" format="boolean" />
         <attr name="isOpenMultiSelect" format="boolean" />
+        <attr name="isShowTree" format="boolean" />
 
         <attr name="groupItemBGColor" format="dimension|color" />
         <attr name="groupItemColor" format="dimension|color" />

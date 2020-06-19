@@ -45,6 +45,7 @@ public class MemberSearchAdapter extends RecyclerView.Adapter<SmartVH> {
         BaseGroupMemberBO cascadeBean = mDates.get(position);
         String groupMemberName = cascadeBean.getGroupMemberName();
         String groupMemberNumber = cascadeBean.getGroupMemberNumber();
+        String beanGroupName = cascadeBean.getGroupName();
         if (!TextUtils.isEmpty(groupMemberName)) {
             int holderShowNameIndex = groupMemberName.indexOf(searchLabel);
             SpannableStringBuilder messageHolderShowName = new SpannableStringBuilder(groupMemberName);
@@ -61,9 +62,9 @@ public class MemberSearchAdapter extends RecyclerView.Adapter<SmartVH> {
             }
             holder.getText(R.id.item_number).setText(messageContent);
         }
-        if (TextUtils.isEmpty(cascadeBean.getGroupName())) {
-            int groupNameIndex = cascadeBean.getGroupName().indexOf(searchLabel);
-            SpannableStringBuilder groupName = new SpannableStringBuilder(cascadeBean.getGroupName());
+        if (!TextUtils.isEmpty(beanGroupName)) {
+            int groupNameIndex = beanGroupName.indexOf(searchLabel);
+            SpannableStringBuilder groupName = new SpannableStringBuilder(beanGroupName);
             if (groupNameIndex != -1) {
                 groupName.setSpan(new ForegroundColorSpan(Color.RED), groupNameIndex, (groupNameIndex + searchLabel.length()), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
