@@ -27,6 +27,15 @@ public class BaseGroupMemberBO extends BaseBean {
     private String groupId;//警员所在单位ID
     private String groupName;//警员所在单位名称
     private Object memberData;//警员数据
+    private String memberDataStr;//警员数据
+
+    public String getMemberDataStr() {
+        return memberDataStr;
+    }
+
+    public void setMemberDataStr(String memberDataStr) {
+        this.memberDataStr = memberDataStr;
+    }
 
     public String getGroupMemberJob() {
         return groupMemberJob;

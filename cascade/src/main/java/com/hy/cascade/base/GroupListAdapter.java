@@ -54,7 +54,6 @@ public class GroupListAdapter extends RecyclerView.Adapter<SmartVH> {
             for (BaseBean baseBean : baseBeans) {
                 GroupBean bean = (GroupBean) baseBean;
                 initDates(bean);
-                System.out.println("-----------------------------------");
             }
         } else {
             this.mDates = dates;
@@ -65,22 +64,22 @@ public class GroupListAdapter extends RecyclerView.Adapter<SmartVH> {
     private void initDates(GroupBean groupItem) {
         groupItem.setSelect(true);
         this.mDates.add(groupItem);
-        System.out.print(groupItem.getGroupName() + "--");
+//        System.out.print(groupItem.getGroupName() + "--");
         if (groupItem.getGroupMembers() != null && groupItem.getGroupMembers().size() > 0) {
             List<BaseBean> cascades = new ArrayList<>(groupItem.getGroupMembers());
             this.mDates.addAll(cascades);
-            System.out.print("分类成员数：" + groupItem.getGroupMembers().size());
+//            System.out.print("分类成员数：" + groupItem.getGroupMembers().size());
         }
 
         if (groupItem.getChildren() != null && groupItem.getChildren().size() > 0) {
             List<BaseBean> cascades = new ArrayList<>(groupItem.getChildren());
-            System.out.print("   子成员数量：" + groupItem.getChildren().size());
+//            System.out.print("   子成员数量：" + groupItem.getChildren().size());
             for (BaseBean baseBean : cascades) {
                 GroupBean bean = (GroupBean) baseBean;
                 initDates(bean);
             }
         }
-        System.out.println("   结束");
+//        System.out.println("   结束");
     }
 
     @Override
@@ -111,9 +110,9 @@ public class GroupListAdapter extends RecyclerView.Adapter<SmartVH> {
             LinearLayout mLineContainer = holder.getViewById(R.id.line_container);
             if (itemBean.getLevel() > 1) {
                 if (itemBean.isEnd()) {
-                    addEndTag(mLineContainer, cascadeBean.getLevel() + 1, cascadeBean.isEnd());
+                    addEndTag(mLineContainer, cascadeBean.getLevel() + 1);
                 } else {
-                    addLineTag(mLineContainer, cascadeBean.getLevel(), cascadeBean.isEnd());
+                    addLineTag(mLineContainer, cascadeBean.getLevel());
                 }
             }
             holder.itemView.setOnClickListener(v -> {
@@ -132,9 +131,9 @@ public class GroupListAdapter extends RecyclerView.Adapter<SmartVH> {
             mLineContainer.setVisibility(groupItem.getLevel() == 1 ? View.GONE : View.VISIBLE);
             if (groupItem.getLevel() > 1) {
                 if (groupItem.isEnd()) {
-                    addEndTag(mLineContainer, groupItem.getLevel(), cascadeBean.isEnd());
+                    addEndTag(mLineContainer, groupItem.getLevel());
                 } else {
-                    addBranchTag(mLineContainer, groupItem.getLevel(), cascadeBean.isEnd());
+                    addBranchTag(mLineContainer, groupItem.getLevel());
                 }
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -157,14 +156,14 @@ public class GroupListAdapter extends RecyclerView.Adapter<SmartVH> {
         }
     }
 
-    private void addLineTag(LinearLayout mLineContainer, int level, boolean isClickEnd) {
+    private void addLineTag(LinearLayout mLineContainer, int level) {
         mLineContainer.removeAllViews();
         for (int i = 0; i < level; i++) {
             addLine(mLineContainer);
         }
     }
 
-    private void addBranchTag(LinearLayout mLineContainer, int level, boolean isClickEnd) {
+    private void addBranchTag(LinearLayout mLineContainer, int level) {
         mLineContainer.removeAllViews();
         for (int i = 0; i < level - 1; i++) {
             if (i == (level - 2)) {
@@ -175,7 +174,7 @@ public class GroupListAdapter extends RecyclerView.Adapter<SmartVH> {
         }
     }
 
-    private void addEndTag(LinearLayout mLineContainer, int level, boolean isClickEnd) {
+    private void addEndTag(LinearLayout mLineContainer, int level) {
         mLineContainer.removeAllViews();
         for (int i = 0; i < level - 1; i++) {
             if (i == (level - 2)) {
@@ -243,30 +242,5 @@ public class GroupListAdapter extends RecyclerView.Adapter<SmartVH> {
         return mDates;
     }
 
-    public List<BaseBean> searchLabel(List<BaseBean> mDates, CharSequence label) {
-        List<BaseBean> cascadeList = new ArrayList<>();
-        if (mDates != null)
-            for (BaseBean baseCascade : mDates) {
-                if (baseCascade instanceof GroupBean) {
-                    GroupBean cascade = (GroupBean) baseCascade;
-                    GroupBean bean1 = cascade;
-                    List<BaseGroupMemberBO> cascadeItemBeans = new ArrayList<>();
-                    for (int i = 0; i < cascade.getGroupMembers().size(); i++) {
-                        BaseGroupMemberBO cascadeItemBean = (BaseGroupMemberBO) cascade.getGroupMembers().get(i);
-                        if (cascadeItemBean.getGroupMemberName().contains(label)) {
-                            bean1.setSelect(true);
-                            cascadeItemBeans.add(cascadeItemBean);
-                        }
-                    }
 
-                    List<BaseBean> baseBeans = new ArrayList<>(cascade.getChildren());
-                    List<BaseBean> cascadeBeans = searchLabel(baseBeans, label);
-                    bean1.setGroupMembers(cascadeItemBeans);
-//                    bean1.setChildren(cascadeBeans);
-                    cascadeList.add(bean1);
-                }
-
-            }
-        return cascadeList;
-    }
 }

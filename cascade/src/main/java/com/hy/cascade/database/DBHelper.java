@@ -32,11 +32,11 @@ public class DBHelper {
             public void migrate(@NonNull SupportSQLiteDatabase database) {
 //                database.execSQL("alter table instructModel add duration integer NOT NULL DEFAULT 0");
 //                database.execSQL("alter table instructModel add fileSize real  NOT NULL DEFAULT 0");
-                database.execSQL("alter table ChatMessage add messageHolders text");
+                database.execSQL("alter table BaseGroupMemberBO add memberDataStr text");
             }
         };
         mDataBase = Room.databaseBuilder(context, AppDataBase.class, "member.db")
-                .addMigrations()
+                .addMigrations(migration1_2)
                 .allowMainThreadQueries()
                 .build();
     }

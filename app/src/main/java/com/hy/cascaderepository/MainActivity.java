@@ -3,10 +3,13 @@ package com.hy.cascaderepository;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import com.alibaba.fastjson.JSON;
 import com.hy.cascade.database.BaseGroupMemberBO;
+import com.hy.cascade.listener.OnGroupRefreshListener;
 import com.hy.cascade.listener.OnMemberClickListener;
 import com.hy.cascade.widget.GroupTreeView;
 
@@ -14,28 +17,39 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity implements OnMemberClickListener {
+public class MainActivity extends AppCompatActivity implements OnMemberClickListener,  SwipeRefreshLayout.OnRefreshListener {
+
+    private List<Member> mMembers;
+    private List<AllDepart> mDeparts;
+    private GroupTreeView mGroupTreeView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        GroupTreeView groupTreeView = findViewById(R.id.gt_view);
-        groupTreeView.setOnMemberClickListener(this);
+        mGroupTreeView = findViewById(R.id.gt_view);
+        mGroupTreeView.setOnMemberClickListener(this);
+        mGroupTreeView.setOnGroupRefreshListener(this);
         String departJson = getJson(this, "allDepart.json");
         String memberJson = getJson(this, "allMember.json");
-        List<Member> members = JSON.parseArray(memberJson, Member.class);
-        List<AllDepart> departs = JSON.parseArray(departJson, AllDepart.class);
-        for (Member member : members) {
+        mMembers = JSON.parseArray(memberJson, Member.class);
+        mDeparts = JSON.parseArray(departJson, AllDepart.class);
+        for (Member member : mMembers) {
             member.setMemberData(member);
         }
-        for (AllDepart depart : departs) {
+        for (AllDepart depart : mDeparts) {
             depart.setGroupData(depart);
         }
-        groupTreeView.setGroupBOS("440114000000", "花都分局", departs, members);
 //        groupTreeView.setGroupBOS("783755097", "花都分局", departs, members);
+        initDates();
+    }
+
+    private void initDates() {
+        mGroupTreeView.setGroupBOS("440114000000", "花都分局", mDeparts, mMembers);
     }
 
     /**
@@ -66,5 +80,23 @@ public class MainActivity extends AppCompatActivity implements OnMemberClickList
     @Override
     public void onMemberClick(BaseGroupMemberBO groupMemberBO) {
         System.out.println(groupMemberBO.getGroupMemberName());
+    }
+
+
+    @Override
+    public void onRefresh() {
+//        initDates();
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mGroupTreeView.setRefreshFinish();
+                    }
+                });
+
+            }
+        },3000);
     }
 }

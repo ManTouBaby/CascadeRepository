@@ -6,6 +6,7 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -29,6 +30,7 @@ import com.hy.cascade.database.BaseGroupMemberBO;
 import com.hy.cascade.database.DBHelper;
 import com.hy.cascade.database.MemberDAO;
 import com.hy.cascade.listener.OnGroupItemClickListener;
+import com.hy.cascade.listener.OnGroupRefreshListener;
 import com.hy.cascade.listener.OnMemberClickListener;
 import com.hy.cascade.utils.ArrayToTreeUtil;
 
@@ -40,11 +42,12 @@ import java.util.List;
  * @date:2020/06/16 17:42
  * @desc:
  */
-public class GroupTreeView extends LinearLayout implements View.OnClickListener, OnGroupItemClickListener {
+public class GroupTreeView extends LinearLayout implements View.OnClickListener, OnGroupItemClickListener{
     private final LinearLayout mToolbarContainer;
     private RecyclerView mCascadeList;
     private TextView mCancel;
     private EditText mEditText;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private OnMemberClickListener mMemberClickListener;
 
     private SharedPreferences mSharedPreferences;
@@ -60,6 +63,7 @@ public class GroupTreeView extends LinearLayout implements View.OnClickListener,
 
     private List<BaseGroupBO> mBaseGroupBOS;
     private List<BaseGroupMemberBO> mBaseGroupMemberBOS;
+
 
     private Handler mHandler = new Handler();
 
@@ -96,6 +100,9 @@ public class GroupTreeView extends LinearLayout implements View.OnClickListener,
         mMemberDao = DBHelper.getInstance(context).createMemberDao();
 
         LayoutInflater.from(context).inflate(R.layout.include_group_tree_show, this);
+        mSwipeRefreshLayout = findViewById(R.id.sw_refresh);
+        mSwipeRefreshLayout.setEnabled(false);
+
         mCancel = findViewById(R.id.mi_cancel_search_history);
 
         mToolbarContainer = findViewById(R.id.mi_toolbar_container);
@@ -120,9 +127,7 @@ public class GroupTreeView extends LinearLayout implements View.OnClickListener,
             mRootGroupID = mSharedPreferences.getString(ROOT_GROUP_ID, null);
             mBaseGroupBOS = mMemberDao.queryAllGroup();
             mBaseGroupMemberBOS = mMemberDao.queryAllMember();
-            mHandler.post(() -> {
-                if (!TextUtils.isEmpty(mRootGroupID)) initDate(mRootGroupID, mRootGroupName);
-            });
+            mHandler.post(this::initDate);
         }).start();
     }
 
@@ -162,12 +167,15 @@ public class GroupTreeView extends LinearLayout implements View.OnClickListener,
         mMemberDao.insertGroupMembers(mBaseGroupMemberBOS);
         mSharedPreferences.edit().putString(ROOT_GROUP_ID, rootGroupId).apply();
         mSharedPreferences.edit().putString(ROOT_GROUP_NAME, rootGroupName).apply();
-        initDate(rootGroupId, rootGroupName);
+        mRootGroupID = rootGroupId;
+        mRootGroupName = rootGroupName;
+        initDate();
     }
 
-    private void initDate(String rootGroupId, String rootGroupName) {
+    private void initDate() {
+        if (TextUtils.isEmpty(mRootGroupID)) return;
         new Thread(() -> {
-            List<GroupBean> groupBeans = ArrayToTreeUtil.groupToTree(isShowRoot, false, rootGroupId, rootGroupName, mBaseGroupBOS, mBaseGroupMemberBOS);
+            List<GroupBean> groupBeans = ArrayToTreeUtil.groupToTree(isShowRoot, false, mRootGroupID, mRootGroupName, mBaseGroupBOS, mBaseGroupMemberBOS);
             List<BaseBean> baseBeans = new ArrayList<>(groupBeans);
             mHandler.post(() -> mCascadeAdapter.setDates(baseBeans));
         }).start();
@@ -194,7 +202,13 @@ public class GroupTreeView extends LinearLayout implements View.OnClickListener,
     }
 
     public void setOnMemberClickListener(OnMemberClickListener mMemberClickListener) {
+//        mSwipeRefreshLayout.setEnabled(true);
         this.mMemberClickListener = mMemberClickListener;
+    }
+
+    public void setOnGroupRefreshListener(SwipeRefreshLayout.OnRefreshListener mOnGroupRefreshListener) {
+        mSwipeRefreshLayout.setEnabled(true);
+        mSwipeRefreshLayout.setOnRefreshListener(mOnGroupRefreshListener);
     }
 
     @Override
@@ -202,5 +216,9 @@ public class GroupTreeView extends LinearLayout implements View.OnClickListener,
         if (mMemberClickListener != null) {
             mMemberClickListener.onMemberClick(itemBean);
         }
+    }
+
+    public void setRefreshFinish() {
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 }

@@ -62,10 +62,16 @@
             android:textSize="14sp" />
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_cascade_list"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/sw_refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="4dp"
-        android:background="#EDEDED" />
+        android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_cascade_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="4dp"
+            android:background="#EDEDED" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 </LinearLayout>

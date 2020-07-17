@@ -8,7 +8,7 @@ import android.arch.persistence.room.RoomDatabase;
  * @date:2020/06/17 15:12
  * @desc:
  */
-@Database(entities = {BaseGroupBO.class, BaseGroupMemberBO.class}, version = 1, exportSchema = false)
+@Database(entities = {BaseGroupBO.class, BaseGroupMemberBO.class}, version = 2, exportSchema = false)
 public abstract class AppDataBase extends RoomDatabase {
     abstract MemberDAO createMemberDao();
 }
